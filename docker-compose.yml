@@ -1,0 +1,25 @@
+version: '3'
+
+networks:
+  forgejo:
+    external: false
+
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:1.21-rootless
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    networks:
+      - forgejo
+    volumes:
+      - ./forgejo/data:/var/lib/gitea/data
+      - ./forgejo/git:/var/lib/gitea/git
+      - ./forgejo/etc/gitea:/etc/gitea
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '3000:3000'
+      - '2222:22'
